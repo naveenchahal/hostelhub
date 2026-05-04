@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const User = require('../model/User');
 const { MessMenu } = require('../model/Mess');
-const { Poll, Notification } = require('../model/index');
+const { Poll, Notification } = require('../model/Index');
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/hostel_management';
 

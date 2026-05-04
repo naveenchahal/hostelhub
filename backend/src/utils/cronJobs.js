@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const LeavePass = require('../model/LeavePass');
-const { Notification } = require('../model/index');
+const { Notification } = require('../model/Index');
 const User = require('../model/User');
 
 // ── Every hour: expire overdue leave passes ───────────────────────────────────
