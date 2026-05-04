@@ -25,14 +25,8 @@ const server = http.createServer(app);
 // ── Allowed Origins ───────────────────────────────────────────────────────────
 const ALLOWED_ORIGINS = [
   // Local development
-  'http://localhost:3000',
-  'http://localhost:5173',
-  'http://127.0.0.1:3000',
 
-  // Production — placementor.xyz
-  'https://placementor.xyz',
-  'https://www.placementor.xyz',
-  'https://hostelhive.placementor.xyz',
+  
   'https://hostelhub02.vercel.app',
 
   // Allow any extra origin set in .env (e.g. staging URL)
