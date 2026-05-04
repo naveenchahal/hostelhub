@@ -8,23 +8,56 @@ const morgan = require('morgan');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
 
-const connectDB = require('./config/db.js');
-const { errorHandler } = require('./middleware/auth.js');
+const connectDB = require('./config/db');
+const { errorHandler } = require('./middleware/auth');
 
 // Routes
-const authRouter = require('./routes/auth.js');
-const leaveRouter = require('./routes/leave.js');
-const complaintRouter = require('./routes/complaints.js');
-const adminRouter = require('./routes/admin.js');
-const { messRouter, mkRouter, pollRouter, notifRouter, lfRouter, aiRouter } = require('./routes/index.js');
+const authRouter = require('./routes/auth');
+const leaveRouter = require('./routes/leave');
+const complaintRouter = require('./routes/complaints');
+const adminRouter = require('./routes/admin');
+const { messRouter, mkRouter, pollRouter, notifRouter, lfRouter, aiRouter } = require('./routes/index');
 
 // Init
 const app = express();
 const server = http.createServer(app);
 
+// ── Allowed Origins ───────────────────────────────────────────────────────────
+const ALLOWED_ORIGINS = [
+  // Local development
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'http://127.0.0.1:3000',
+
+  // Production — placementor.xyz
+  'https://placementor.xyz',
+  'https://www.placementor.xyz',
+  'https://hostelhive.placementor.xyz',
+  'https://hostelhub02.vercel.app',
+
+  // Allow any extra origin set in .env (e.g. staging URL)
+  ...(process.env.CLIENT_URL ? [process.env.CLIENT_URL] : []),
+];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS: Origin "${origin}" is not allowed.`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+};
+
 // ── Socket.IO for real-time notifications ─────────────────────────────────────
 const io = new Server(server, {
-  cors: { origin: process.env.CLIENT_URL || '*', methods: ['GET', 'POST'] }
+  cors: {
+    origin: ALLOWED_ORIGINS,
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
 });
 
 io.on('connection', (socket) => {
@@ -40,7 +73,8 @@ app.set('io', io);
 
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
-app.use(cors({ origin: process.env.CLIENT_URL || '*', credentials: true }));
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // preflight for all routes
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
