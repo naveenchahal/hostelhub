@@ -1,7 +1,7 @@
 const QRCode = require('qrcode');
 const { v4: uuidv4 } = require('uuid');
 const LeavePass = require('../model/LeavePass');
-const { Notification } = require('../model/index');
+const { Notification } = require('../model/Index');
 const { sendLeaveApprovedEmail, sendLeaveRejectedEmail } = require('../services/emailService');
 const { scoreLeaveRisk } = require('../services/aiService');
 
