@@ -1,4 +1,4 @@
-const { Marketplace, Notification } = require('../model/index');
+const { Marketplace, Notification } = require('../model/Index');
 const { suggestMarketplacePrice } = require('../services/aiService');
 
 // POST /api/marketplace

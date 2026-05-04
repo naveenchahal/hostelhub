@@ -1,4 +1,4 @@
-const { Poll, Notification, LostFound } = require('../model/index');
+const { Poll, Notification, LostFound } = require('../model/Index');
 const { hostelChatbot } = require('../services/aiService');
 
 // ═══════════════════════════════════════════════════════════════════════════════

@@ -1,4 +1,4 @@
-const { Complaint, Notification } = require('../model/index');
+const { Complaint, Notification } = require('../model/Index');
 const { analyzeComplaintPriority } = require('../services/aiService');
 const { sendComplaintUpdateEmail } = require('../services/emailService');
 

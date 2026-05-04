@@ -1,13 +1,5 @@
-/**
- * AI Service — powers smart features:
- * 1. Auto-prioritize complaints
- * 2. Suggest marketplace pricing
- * 3. Leave risk scoring
- * 4. Mess feedback sentiment + weekly summary
- * 5. AI Chatbot for hostel queries
- *
- * Uses Groq (free, fast) — llama-3.3-70b-versatile model
- */
+
+ 
 const Groq = require('groq-sdk');
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
