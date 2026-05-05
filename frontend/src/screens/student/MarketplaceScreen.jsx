@@ -98,8 +98,9 @@ export default function MarketplaceScreen() {
             fontSize:'13.5px',
             fontFamily:'var(--font-body)',
             outline:'none',
-            maxWidth:'280px',
-            width:'100%'
+            width:'100%',
+            maxWidth:'360px',
+            boxSizing:'border-box'
           }}
         />
       </div>
@@ -111,7 +112,11 @@ export default function MarketplaceScreen() {
       ) : filtered.length === 0 ? (
         <EmptyState icon="🛒" title="No listings found" />
       ) : (
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'16px' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+          gap: '16px'
+        }}>
           {filtered.map(l => {
             const interestedCount = l.interestedBuyers?.length ?? 0;
 
@@ -121,7 +126,9 @@ export default function MarketplaceScreen() {
                   background:'var(--bg2)',
                   border:'1px solid var(--border)',
                   borderRadius:'var(--radius)',
-                  overflow:'hidden'
+                  overflow:'hidden',
+                  display:'flex',
+                  flexDirection:'column'
                 }}
               >
                 <div style={{
@@ -131,12 +138,13 @@ export default function MarketplaceScreen() {
                   alignItems:'center',
                   justifyContent:'center',
                   fontSize:'42px',
-                  borderBottom:'1px solid var(--border)'
+                  borderBottom:'1px solid var(--border)',
+                  flexShrink: 0
                 }}>
                   {l.emoji || '📦'}
                 </div>
 
-                <div style={{ padding:'14px' }}>
+                <div style={{ padding:'14px', display:'flex', flexDirection:'column', flex:1 }}>
                   <div style={{ fontSize:'14px', fontWeight:'600', marginBottom:'6px' }}>{l.title}</div>
 
                   <div>
@@ -163,7 +171,6 @@ export default function MarketplaceScreen() {
                     borderRadius:'8px',
                     border:'1px solid var(--border)'
                   }}>
-                    {/* Avatar */}
                     {l.seller?.profilePhoto ? (
                       <img
                         src={l.seller.profilePhoto}
@@ -182,8 +189,7 @@ export default function MarketplaceScreen() {
                       </div>
                     )}
 
-                    {/* Info */}
-                    <div style={{ overflow:'hidden', flex:1 }}>
+                    <div style={{ overflow:'hidden', flex:1, minWidth:0 }}>
                       <div style={{
                         fontSize:'12px', fontWeight:'600', color:'var(--text)',
                         whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis'
@@ -199,20 +205,23 @@ export default function MarketplaceScreen() {
                     </div>
                   </div>
 
-                  {isSeller(l) ? (
-                    <div style={{ display:'flex', gap:'8px' }}>
-                      <Button fullWidth size="sm" onClick={() => handleMarkSold(l._id)}>
-                        Mark Sold
+                  {/* Buttons at bottom */}
+                  <div style={{ marginTop:'auto' }}>
+                    {isSeller(l) ? (
+                      <div style={{ display:'flex', gap:'8px' }}>
+                        <Button fullWidth size="sm" onClick={() => handleMarkSold(l._id)}>
+                          Mark Sold
+                        </Button>
+                        <Button fullWidth size="sm" onClick={() => handleDelete(l._id)}>
+                          Delete
+                        </Button>
+                      </div>
+                    ) : (
+                      <Button fullWidth size="sm" onClick={() => handleInterest(l._id)}>
+                        Express Interest
                       </Button>
-                      <Button fullWidth size="sm" onClick={() => handleDelete(l._id)}>
-                        Delete
-                      </Button>
-                    </div>
-                  ) : (
-                    <Button fullWidth size="sm" onClick={() => handleInterest(l._id)}>
-                      Express Interest
-                    </Button>
-                  )}
+                    )}
+                  </div>
                 </div>
               </div>
             );
