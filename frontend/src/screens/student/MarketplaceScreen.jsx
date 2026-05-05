@@ -148,8 +148,46 @@ export default function MarketplaceScreen() {
                     )}
                   </div>
 
-                  <div style={{ fontSize:'11px', marginTop:'6px', marginBottom:'10px' }}>
+                  <div style={{ fontSize:'11px', marginTop:'6px', color:'var(--text2)' }}>
                     📍 Block {l.hostelBlock} · {l.condition} · {interestedCount} interested
+                  </div>
+
+                  {/* Seller Details */}
+                  <div style={{
+                    display:'flex',
+                    alignItems:'center',
+                    gap:'8px',
+                    margin:'10px 0',
+                    padding:'8px 10px',
+                    background:'var(--bg3)',
+                    borderRadius:'8px',
+                    border:'1px solid var(--border)'
+                  }}>
+                    {l.seller?.profilePhoto ? (
+                      <img
+                        src={l.seller.profilePhoto}
+                        alt={l.seller.name}
+                        style={{ width:'28px', height:'28px', borderRadius:'50%', objectFit:'cover' }}
+                      />
+                    ) : (
+                      <div style={{
+                        width:'28px', height:'28px', borderRadius:'50%',
+                        background:'var(--accent)', display:'flex',
+                        alignItems:'center', justifyContent:'center',
+                        fontSize:'12px', fontWeight:'700', color:'#fff',
+                        flexShrink: 0
+                      }}>
+                        {l.seller?.name?.charAt(0)?.toUpperCase() || '?'}
+                      </div>
+                    )}
+                    <div style={{ overflow:'hidden' }}>
+                      <div style={{ fontSize:'12px', fontWeight:'600', color:'var(--text)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+                        {l.seller?.name || 'Unknown'}
+                      </div>
+                      <div style={{ fontSize:'11px', color:'var(--text2)' }}>
+                        Room {l.seller?.roomNumber || 'N/A'} · Block {l.seller?.hostelBlock || '—'}
+                      </div>
+                    </div>
                   </div>
 
                   {isSeller(l) ? (
