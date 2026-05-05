@@ -14,7 +14,7 @@
   border-right: 1px solid var(--border);
   display: flex; flex-direction: column;
   z-index: 100;
-  transition: width 0.25s var(--ease);
+  transition: width 0.25s var(--ease), transform 0.25s var(--ease);
   overflow: hidden;
 }
 
@@ -132,6 +132,39 @@
   transition: margin-left 0.25s var(--ease);
 }
 
+/* ── MOBILE TOPBAR ── */
+.mobileTopbar {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 56px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 200;
+}
+.mobileLogoText {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 800;
+  color: var(--amber);
+}
+.hamburger {
+  background: none; border: none;
+  color: var(--text); font-size: 22px;
+  cursor: pointer; padding: 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── OVERLAY (mobile sidebar backdrop) ── */
+.overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 99;
+}
+.overlayVisible { display: block; }
+
 /* ── PAGE HEADER (shared) ── */
 :global(.pageHeader) {
   display: flex; align-items: flex-start;
@@ -144,3 +177,35 @@
   color: var(--text); line-height: 1.2;
 }
 :global(.pageSub) { font-size: 13px; color: var(--text2); margin-top: 4px; }
+
+/* ══════════════════════════════
+   MOBILE RESPONSIVE
+   ══════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Show topbar */
+  .mobileTopbar { display: flex; }
+
+  /* Sidebar hidden by default — slides in */
+  .sidebar {
+    width: 256px !important;
+    transform: translateX(-100%);
+    top: 0;
+  }
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  /* Main full width, top padding for topbar */
+  .main {
+    margin-left: 0 !important;
+    padding: 80px 16px 24px;
+  }
+
+  /* pageTitle smaller on mobile */
+  :global(.pageTitle) { font-size: 22px; }
+
+  /* Grids — 1 column on mobile */
+  :global(.grid-3) { grid-template-columns: 1fr !important; }
+  :global(.grid-2) { grid-template-columns: 1fr !important; }
+}
