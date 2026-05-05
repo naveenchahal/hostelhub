@@ -41,7 +41,7 @@ const baseTemplate = (content) => `
 // ── Core send function ────────────────────────────────────────────────────────
 const sendEmail = async ({ to, subject, html }) => {
   return await resend.emails.send({
-    from: process.env.FROM_EMAIL,
+   from: `"HostelHub Support" <noreply@placementor.xyz>`,
     to,
     subject,
     html,
