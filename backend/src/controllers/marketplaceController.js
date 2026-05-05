@@ -7,7 +7,7 @@ exports.createListing = async (req, res, next) => {
     const { title, description, category, price, originalPrice, condition, tags } = req.body;
     const images = req.files ? req.files.map(f => `/uploads/marketplace/${f.filename}`) : [];
 
-    let aiPrice = null; // ✅ pehle declare karo
+    let aiPrice = null;
     try {
       aiPrice = await suggestMarketplacePrice(title, description, category, condition);
     } catch (aiErr) {
@@ -20,7 +20,7 @@ exports.createListing = async (req, res, next) => {
       price: +price, originalPrice: originalPrice ? +originalPrice : undefined,
       condition, images,
       tags: tags ? tags.split(',').map(t => t.trim()) : [],
-      aiSuggestedPrice: aiPrice?.suggestedPrice ?? null, // ✅ safe
+      aiSuggestedPrice: aiPrice?.suggestedPrice ?? null,
     });
 
     res.status(201).json({ success: true, listing, aiPriceSuggestion: aiPrice ?? null });
@@ -47,7 +47,7 @@ exports.getListings = async (req, res, next) => {
     ];
 
     const listings = await Marketplace.find(filter)
-      .populate('seller', 'name roomNumber hostelBlock profilePhoto')
+      .populate('seller', 'name roomNumber hostelBlock profilePhoto phone') // ✅ phone add kiya
       .sort({ createdAt: -1 })
       .limit(+limit).skip((page - 1) * limit);
 
